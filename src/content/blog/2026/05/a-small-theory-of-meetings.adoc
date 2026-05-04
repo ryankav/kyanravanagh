@@ -1,0 +1,9 @@
+---
+title: "Test blog post"
+description: "A simple test blog post to check that the website is functioning as intended"
+pubDate: "May 4 2026"
+tag: "Work"
+readingTime: 1
+---
+
+A simple blog post to check that the site is functioning as intended

@@ -9,3 +9,7 @@ directory = "./dist"
 
 [observability]
 enabled = true
+
+[[routes]]
+pattern = "kyanravanagh.com"
+custom_domain = true

@@ -1,0 +1,31 @@
+---
+interface Props {
+	label?: string;
+	aspect?: string;
+	src?: string;
+	alt?: string;
+}
+
+const { label = "hero image", aspect = "16 / 9", src, alt = "" } = Astro.props;
+---
+
+{
+	src ? (
+		<div
+			class="relative w-full overflow-hidden border border-rule bg-bg-soft"
+			style={`aspect-ratio: ${aspect}`}
+		>
+			<img src={src} alt={alt} loading="lazy" class="w-full h-full object-cover" />
+		</div>
+	) : (
+		<div
+			class="relative w-full bg-bg-soft border border-rule overflow-hidden flex items-center justify-center"
+			style={`aspect-ratio: ${aspect}`}
+		>
+			<div class="absolute inset-0 opacity-70 hero-stripes" aria-hidden="true" />
+			<span class="relative font-mono text-[11px] uppercase tracking-[0.16em] text-muted bg-bg px-3 py-1.5 border border-rule">
+				{label}
+			</span>
+		</div>
+	)
+}

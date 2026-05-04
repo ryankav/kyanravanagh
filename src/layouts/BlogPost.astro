@@ -1,85 +1,119 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
+import type { CollectionEntry } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import HeroPlaceholder from "../components/HeroPlaceholder.astro";
+import { AUTHOR_NAME, AUTHOR_BIO } from "../consts";
 
-type Props = CollectionEntry<'blog'>['data'];
-
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const {
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	heroImage,
+	tag,
+	readingTime,
+	pull,
+} = Astro.props;
 ---
 
 <html lang="en">
 	<head>
-		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
+		<BaseHead title={title} description={description} image={heroImage} />
 	</head>
-
 	<body>
-		<Header />
-		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <img width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
+		<div class="flex flex-col min-h-screen">
+			<Header />
+			<div class="flex-1 w-full animate-fade-in">
+				<main class="max-w-shell mx-auto pt-[72px] pb-24 px-gutter w-full">
+					<article class="max-w-reading mx-auto">
+						<header class="mb-10">
+							<div
+								class="flex items-center gap-2.5 font-mono text-[11px] tracking-[0.12em] uppercase text-muted mb-4"
+							>
+								<a
+									href="/blog/"
+									class="text-accent font-medium transition-colors hover:text-accent-deep"
+									>{tag}</a
+								>
+								<span class="text-muted-2" aria-hidden="true">·</span>
+								<FormattedDate date={pubDate} />
+								{
+									readingTime && (
+										<>
+											<span class="text-muted-2" aria-hidden="true">·</span>
+											<span>{readingTime} min read</span>
+										</>
+									)
+								}
+							</div>
+							<h1
+								class="font-display font-normal text-[clamp(36px,5.5vw,60px)] leading-[1.06] tracking-[-0.024em] mb-5 text-ink text-balance"
+							>
+								{title}
+							</h1>
+							<p
+								class="font-display italic font-light text-[clamp(19px,1.7vw,23px)] leading-[1.45] text-ink-2 m-0 max-w-[600px] text-pretty"
+							>
+								{description}
+							</p>
+						</header>
+
+						<div class="my-12 -mx-10 max-[720px]:mx-0 max-[720px]:my-8">
+							<HeroPlaceholder
+								label="article hero image"
+								aspect="3 / 2"
+								src={heroImage}
+								alt={title}
+							/>
+						</div>
+
+						<div class="article-body">
+							<slot />
+							{
+								pull && (
+									<blockquote>
+										<p>{pull}</p>
+									</blockquote>
+								)
+							}
 							{
 								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
+									<p>
+										<em>
+											Last updated on <FormattedDate date={updatedDate} />.
+										</em>
+									</p>
 								)
 							}
 						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
-					<slot />
-				</div>
-			</article>
-		</main>
-		<Footer />
+
+						<footer class="mt-16 pt-8 border-t border-rule">
+							<div class="flex items-center gap-4">
+								<div
+									class="w-12 h-12 rounded-full border border-rule shrink-0 bg-[linear-gradient(135deg,var(--color-accent-soft),var(--color-bg-soft))]"
+									aria-hidden="true"
+								>
+								</div>
+								<div class="flex-1">
+									<div class="font-display font-medium text-[16px] text-ink leading-[1.3]">
+										{AUTHOR_NAME}
+									</div>
+									<div class="text-[14px] text-muted leading-[1.4]">{AUTHOR_BIO}</div>
+								</div>
+								<a
+									href="/about/"
+									class="font-mono text-[11px] tracking-[0.12em] uppercase text-accent whitespace-nowrap"
+									>About →</a
+								>
+							</div>
+						</footer>
+					</article>
+				</main>
+			</div>
+			<Footer />
+		</div>
 	</body>
 </html>
