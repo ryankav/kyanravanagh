@@ -1,0 +1,11 @@
+name = "kyanravanagh"
+compatibility_date = "2026-05-04"
+compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
+upload_source_maps = true
+
+[assets]
+binding = "ASSETS"
+directory = "./dist"
+
+[observability]
+enabled = true
