@@ -25,7 +25,7 @@ const earliest = posts.length
 const latest = posts.length
 	? posts[0].data.pubDate.getFullYear()
 	: new Date().getFullYear();
-const range = earliest === latest ? `${latest}` : `${earliest} and ${latest}`;
+const range = earliest === latest ? `in ${latest}` : `between ${earliest} and ${latest}`;
 ---
 
 <!doctype html>
@@ -50,7 +50,7 @@ const range = earliest === latest ? `${latest}` : `${earliest} and ${latest}`;
 						<h1
 							class="font-display font-light italic text-[clamp(26px,3vw,36px)] leading-[1.2] tracking-[-0.015em] text-ink mb-7 text-pretty"
 						>
-							{posts.length} essays, written between {range}.
+							{posts.length} essays, written {range}.
 						</h1>
 						<div class="flex flex-wrap gap-1.5" data-archive-tags>
 							<button
