@@ -54,6 +54,29 @@ All commands are run from the root of the project, from a terminal:
 | `pnpm astro -- --help`         | Get help using the Astro CLI                     |
 | `pnpm build && pnpm deploy` | Deploy your production site to Cloudflare        |
 | `pnpm wrangler tail`               | View real-time logs for all Workers              |
+| `pnpm test`                        | Run the Playwright test suite                    |
+| `pnpm test:a11y`                   | Run the accessibility (axe-core) checks          |
+| `pnpm test:ui`                     | Open the Playwright UI runner                    |
+
+## ♿ Accessibility
+
+Accessibility is enforced automatically. [`tests/a11y.spec.ts`](tests/a11y.spec.ts) drives
+the site with Playwright and:
+
+- runs [axe-core](https://github.com/dequelabs/axe-core) against the home, about,
+  archive, and every blog post page, failing on any WCAG 2.1 A/AA violation
+  (blog posts are discovered from the archive, so new posts are covered with no
+  test changes);
+- asserts the structural basics — one `<main>` landmark, a single non-empty `<h1>`,
+  a declared document language, a keyboard-reachable skip link, and that the archive
+  tag filters expose their `aria-pressed` state.
+
+Run them locally with `pnpm test:a11y`. The same suite runs in CI on every push and
+pull request via [`.github/workflows/accessibility.yml`](.github/workflows/accessibility.yml).
+
+The checks run against the Astro dev server because the Cloudflare adapter can't
+`astro preview`; the dev toolbar is disabled there (`DISABLE_DEV_TOOLBAR`) so the test
+DOM matches production.
 
 ## 👀 Want to learn more?
 

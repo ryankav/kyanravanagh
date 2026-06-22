@@ -39,8 +39,8 @@ const range = earliest === latest ? `in ${latest}` : `between ${earliest} and ${
 	<body>
 		<div class="flex flex-col min-h-screen">
 			<Header />
-			<div class="flex-1 w-full animate-fade-in">
-				<main class="max-w-shell mx-auto pt-[72px] pb-24 px-gutter w-full">
+			<div class="flex-1 w-full animate-fade-in motion-reduce:animate-none">
+				<main id="main-content" class="max-w-shell mx-auto pt-[72px] pb-24 px-gutter w-full">
 					<section class="max-w-reading mb-12">
 						<p
 							class="font-mono text-[11px] tracking-[0.18em] uppercase text-muted mb-[18px] inline-block"
@@ -52,24 +52,34 @@ const range = earliest === latest ? `in ${latest}` : `between ${earliest} and ${
 						>
 							{posts.length} essays, written {range}.
 						</h1>
-						<div class="flex flex-wrap gap-1.5" data-archive-tags>
+						<div
+							class="flex flex-wrap gap-1.5"
+							data-archive-tags
+							role="group"
+							aria-label="Filter essays by tag"
+						>
 							<button
-								class="tag-pill is-active font-mono text-[11px] tracking-[0.12em] uppercase border px-3 py-1.5 cursor-pointer transition-all"
+								type="button"
+								class="tag-pill is-active font-mono text-[11px] tracking-[0.12em] uppercase border px-3 py-1.5 cursor-pointer transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep"
 								data-tag="All"
+								aria-pressed="true"
 							>
 								All
 							</button>
 							{
 								tags.map((t) => (
 									<button
-										class="tag-pill font-mono text-[11px] tracking-[0.12em] uppercase border px-3 py-1.5 cursor-pointer transition-all"
+										type="button"
+										class="tag-pill font-mono text-[11px] tracking-[0.12em] uppercase border px-3 py-1.5 cursor-pointer transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep"
 										data-tag={t}
+										aria-pressed="false"
 									>
 										{t}
 									</button>
 								))
 							}
 						</div>
+						<p class="sr-only" role="status" aria-live="polite" data-archive-status></p>
 					</section>
 
 					<section class="max-w-reading" data-archive-list>
@@ -87,7 +97,7 @@ const range = earliest === latest ? `in ${latest}` : `between ${earliest} and ${
 											<li class="archive-item" data-tag={p.data.tag}>
 												<a
 													href={`/blog/${p.id}/`}
-													class="grid grid-cols-[80px_1fr_100px] gap-5 py-3.5 items-baseline border-b border-dashed border-rule transition-[padding] hover:pl-2 group max-[600px]:grid-cols-[70px_1fr]"
+													class="grid grid-cols-[80px_1fr_100px] gap-5 py-3.5 items-baseline border-b border-dashed border-rule transition-[padding] hover:pl-2 group max-[600px]:grid-cols-[70px_1fr] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep"
 												>
 													<span class="font-mono text-[11px] tracking-[0.12em] uppercase text-muted">
 														{p.data.pubDate.toLocaleDateString("en-US", {
@@ -140,23 +150,33 @@ const range = earliest === latest ? `in ${latest}` : `between ${earliest} and ${
 		<script>
 			const tagBar = document.querySelector<HTMLDivElement>("[data-archive-tags]");
 			const list = document.querySelector<HTMLDivElement>("[data-archive-list]");
+			const status = document.querySelector<HTMLParagraphElement>("[data-archive-status]");
 			if (tagBar && list) {
 				tagBar.addEventListener("click", (event) => {
 					const target = event.target as HTMLElement;
 					const btn = target.closest<HTMLButtonElement>("button.tag-pill");
 					if (!btn) return;
 					const active = btn.dataset.tag ?? "All";
-					tagBar.querySelectorAll(".tag-pill").forEach((el) => {
-						el.classList.toggle("is-active", el === btn);
+					tagBar.querySelectorAll<HTMLButtonElement>(".tag-pill").forEach((el) => {
+						const isActive = el === btn;
+						el.classList.toggle("is-active", isActive);
+						// Keep the visual pressed state and the accessible state in sync.
+						el.setAttribute("aria-pressed", String(isActive));
 					});
+					let visibleCount = 0;
 					list.querySelectorAll<HTMLLIElement>(".archive-item").forEach((item) => {
 						const show = active === "All" || item.dataset.tag === active;
 						item.classList.toggle("is-hidden", !show);
+						if (show) visibleCount++;
 					});
 					list.querySelectorAll<HTMLDivElement>(".archive-year").forEach((year) => {
 						const visible = year.querySelectorAll(".archive-item:not(.is-hidden)").length;
 						year.classList.toggle("is-empty", visible === 0);
 					});
+					if (status) {
+						const label = active === "All" ? "all essays" : `“${active}” essays`;
+						status.textContent = `Showing ${visibleCount} ${label}.`;
+					}
 				});
 			}
 		</script>

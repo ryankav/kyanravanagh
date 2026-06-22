@@ -17,8 +17,8 @@ import { SITE_TITLE } from "../consts";
 	<body>
 		<div class="flex flex-col min-h-screen">
 			<Header />
-			<div class="flex-1 w-full animate-fade-in">
-				<main class="max-w-shell mx-auto pt-[72px] pb-24 px-gutter w-full">
+			<div class="flex-1 w-full animate-fade-in motion-reduce:animate-none">
+				<main id="main-content" class="max-w-shell mx-auto pt-[72px] pb-24 px-gutter w-full">
 					<section class="max-w-reading mb-16">
 						<p
 							class="font-mono text-[11px] tracking-[0.18em] uppercase text-muted mb-[18px] inline-block"
@@ -58,7 +58,7 @@ import { SITE_TITLE } from "../consts";
 									>
 									<a
 										href="https://github.com/ryankav"
-										class="text-ink border-b border-rule-2 transition-colors hover:text-accent hover:border-accent"
+										class="text-ink border-b border-rule-2 transition-colors hover:text-accent hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep"
 										>ryankav</a
 									>
 								</li>
@@ -71,7 +71,7 @@ import { SITE_TITLE } from "../consts";
 									>
 									<a
 										href="https://en.wikipedia.org/wiki/The_Story_of_a_New_Name"
-										class="text-ink border-b border-rule-2 transition-colors hover:text-accent hover:border-accent"
+										class="text-ink border-b border-rule-2 transition-colors hover:text-accent hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep"
 										>The Story of a New Name</a
 									>
 								</li>
@@ -80,7 +80,7 @@ import { SITE_TITLE } from "../consts";
 							<p class="mt-10">
 								<a
 									href="/"
-									class="font-mono text-[12px] tracking-[0.12em] uppercase text-accent border-b border-accent pb-1"
+									class="font-mono text-[12px] tracking-[0.12em] uppercase text-accent border-b border-accent pb-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep"
 								>
 									← Back to writing
 								</a>

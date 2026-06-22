@@ -26,8 +26,8 @@ const {
 	<body>
 		<div class="flex flex-col min-h-screen">
 			<Header />
-			<div class="flex-1 w-full animate-fade-in">
-				<main class="max-w-shell mx-auto pt-[72px] pb-24 px-gutter w-full">
+			<div class="flex-1 w-full animate-fade-in motion-reduce:animate-none">
+				<main id="main-content" class="max-w-shell mx-auto pt-[72px] pb-24 px-gutter w-full">
 					<article class="max-w-reading mx-auto">
 						<header class="mb-10">
 							<div
@@ -35,7 +35,7 @@ const {
 							>
 								<a
 									href="/blog/"
-									class="text-accent font-medium transition-colors hover:text-accent-deep"
+									class="text-accent font-medium transition-colors hover:text-accent-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep"
 									>{tag}</a
 								>
 								<span class="text-muted-2" aria-hidden="true">·</span>
@@ -105,7 +105,7 @@ const {
 								</div>
 								<a
 									href="/about/"
-									class="font-mono text-[11px] tracking-[0.12em] uppercase text-accent whitespace-nowrap"
+									class="font-mono text-[11px] tracking-[0.12em] uppercase text-accent whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep"
 									>About →</a
 								>
 							</div>

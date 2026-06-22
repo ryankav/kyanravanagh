@@ -13,24 +13,34 @@ const nav = [
 ];
 ---
 
+<a
+	href="#main-content"
+	class="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:left-2 focus-visible:top-2 focus-visible:z-[100] focus-visible:px-4 focus-visible:py-2.5 focus-visible:bg-ink focus-visible:text-bg focus-visible:font-mono focus-visible:text-[13px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep"
+>
+	Skip to content
+</a>
 <header
 	class="sticky top-0 z-50 bg-bg/90 backdrop-blur-md backdrop-saturate-150 border-b border-rule"
 >
 	<div
 		class="max-w-shell mx-auto py-[18px] px-gutter flex items-baseline justify-between gap-8"
 	>
-		<a class="flex items-baseline gap-3" href="/">
+		<a
+			class="flex items-baseline gap-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep"
+			href="/"
+		>
 			<span class="font-display font-medium text-[22px] tracking-[-0.01em] text-ink">
 				{SITE_TITLE}
 			</span>
 		</a>
-		<nav class="flex items-center gap-7">
+		<nav class="flex items-center gap-7" aria-label="Primary">
 			{
 				nav.map((item) => (
 					<a
 						href={item.href}
+						aria-current={item.active ? "page" : undefined}
 						class:list={[
-							"font-mono text-[12px] tracking-[0.12em] uppercase text-muted py-1 transition-colors hover:text-ink",
+							"font-mono text-[12px] tracking-[0.12em] uppercase text-muted py-1 transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep",
 							item.active && "nav-link-active",
 						]}
 					>
@@ -40,7 +50,7 @@ const nav = [
 			}
 			<a
 				href="/rss.xml"
-				class="inline-flex items-center font-mono text-[12px] uppercase text-muted py-1 transition-colors hover:text-ink"
+				class="inline-flex items-center font-mono text-[12px] uppercase text-muted py-1 transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep"
 				title="RSS feed"
 				aria-label="RSS feed"
 			>
