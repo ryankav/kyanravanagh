@@ -1,27 +1,12 @@
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { discoverBlogPosts } from "./helpers";
 
 // WCAG 2.0/2.1 levels A and AA — the standard most organisations target.
 const WCAG_TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"];
 
 // Static routes that should always exist.
 const STATIC_ROUTES = ["/", "/about/", "/blog/"];
-
-/**
- * Discover every blog post URL from the archive page so new posts are covered
- * automatically without editing this file.
- */
-async function discoverBlogPosts(page: Page): Promise<string[]> {
-	await page.goto("/blog/");
-	const hrefs = await page
-		.locator('a[href^="/blog/"]')
-		.evaluateAll((links) =>
-			links
-				.map((a) => new URL((a as HTMLAnchorElement).href).pathname)
-				.filter((path) => path !== "/blog/"),
-		);
-	return [...new Set(hrefs)];
-}
 
 async function analyze(page: Page, url: string) {
 	await page.goto(url);

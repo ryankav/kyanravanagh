@@ -58,25 +58,27 @@ All commands are run from the root of the project, from a terminal:
 | `pnpm test:a11y`                   | Run the accessibility (axe-core) checks          |
 | `pnpm test:ui`                     | Open the Playwright UI runner                    |
 
-## ♿ Accessibility
+## ✦ Flagging AI content
 
-Accessibility is enforced automatically. [`tests/a11y.spec.ts`](tests/a11y.spec.ts) drives
-the site with Playwright and:
+Posts flag any **whole passage the author did not originally write** (AI-generated
+text kept as-is) with an AsciiDoc block role:
 
-- runs [axe-core](https://github.com/dequelabs/axe-core) against the home, about,
-  archive, and every blog post page, failing on any WCAG 2.1 A/AA violation
-  (blog posts are discovered from the archive, so new posts are covered with no
-  test changes);
-- asserts the structural basics — one `<main>` landmark, a single non-empty `<h1>`,
-  a declared document language, a keyboard-reachable skip link, and that the archive
-  tag filters expose their `aria-pressed` state.
+```asciidoc
+[.ai]
+A whole paragraph the author did not originally write. It renders with a coloured
+rule and a "Written by generative AI" label, and stays flagged even if later revised.
+```
 
-Run them locally with `pnpm test:a11y`. The same suite runs in CI on every push and
-pull request via [`.github/workflows/accessibility.yml`](.github/workflows/accessibility.yml).
+`[.ai]` on its own line above a block flags the whole block; it is styled in
+`src/styles/global.css` (search for `AI-annotation marker`). There is no inline
+marker — editing or refining the author's own writing is review, not generation, and
+is never flagged.
 
-The checks run against the Astro dev server because the Cloudflare adapter can't
-`astro preview`; the dev toolbar is disabled there (`DISABLE_DEV_TOOLBAR`) so the test
-DOM matches production.
+Every post automatically carries a small disclaimer under its hero image linking to
+the **Usage of generative AI** section of the About page (`/about/#ai-usage`), where the
+site-wide policy and a legend of the marker live — no per-post frontmatter is needed.
+[`tests/ai-annotations.spec.ts`](tests/ai-annotations.spec.ts) enforces that every post
+links to the policy and that the marker renders from its AsciiDoc role.
 
 ## 👀 Want to learn more?
 

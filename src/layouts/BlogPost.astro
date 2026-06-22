@@ -61,7 +61,7 @@ const {
 							</p>
 						</header>
 
-						<div class="my-12 -mx-10 max-[720px]:mx-0 max-[720px]:my-8">
+						<div class="mt-12 mb-3 -mx-10 max-[720px]:mx-0 max-[720px]:mt-8">
 							<HeroPlaceholder
 								label="article hero image"
 								aspect="3 / 2"
@@ -69,6 +69,15 @@ const {
 								alt={title}
 							/>
 						</div>
+
+						<p class="mb-12 text-[12px] leading-[1.5] text-muted italic max-[720px]:mb-8">
+							To see how I use generative AI on this site,{" "}
+							<a
+								href="/about/#ai-usage"
+								class="text-muted border-b border-rule-2 transition-colors hover:text-accent hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep"
+								>view my policy</a
+							>.
+						</p>
 
 						<div class="article-body">
 							<slot />
